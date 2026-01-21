@@ -1,2 +1,2 @@
 # Consumer360
-customer segmentation using RFM analysis
+customer segmentation using RFM analysis.
