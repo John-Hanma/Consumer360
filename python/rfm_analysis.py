@@ -1,3 +1,4 @@
+from rfm.rfm_validation import validate_rfm_segments
 import os
 import pandas as pd
 from sqlalchemy import create_engine
@@ -18,6 +19,13 @@ df = pd.read_sql("SELECT * FROM single_customer_view", engine)
 # Apply RFM scoring and segmentation
 df = assign_rfm_scores(df)
 df = assign_rfm_segments(df)
+
+validation_df = validate_rfm_segments(df)
+
+validation_df.to_csv(
+    "data/processed/rfm_segment_validation.csv",
+    index=False
+)
 
 # Save processed output
 df.to_csv(
