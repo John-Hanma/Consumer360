@@ -1,3 +1,4 @@
+from basket.association_rules import run_market_basket_analysis
 from rfm.rfm_validation import validate_rfm_segments
 import os
 import pandas as pd
@@ -24,6 +25,27 @@ validation_df = validate_rfm_segments(df)
 
 validation_df.to_csv(
     "data/processed/rfm_segment_validation.csv",
+    index=False
+)
+
+# Load transaction-level data for Market Basket Analysis
+transactions_df = pd.read_sql(
+    "SELECT transaction_id, product_name FROM mba_transactions",
+    engine
+)
+
+# Run Market Basket Analysis
+basket_rules = run_market_basket_analysis(transactions_df)
+# Filter to strong, actionable rules
+basket_rules = basket_rules[basket_rules['lift'] >= 2].head(25)
+
+basket_rules.to_csv(
+    "data/processed/market_basket_rules.csv",
+    index=False
+)
+# Save MBA output
+basket_rules.to_csv(
+    "data/processed/market_basket_rules.csv",
     index=False
 )
 
